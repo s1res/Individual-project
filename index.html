@@ -1,0 +1,2048 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="PC-GUIDE 2026 — пошаговый гайд по сборке ПК. Избегай ошибок и не переплачивай.">
+    <meta name="theme-color" content="#0a0a0f">
+    <title>PC-GUIDE 2026 — Собери компьютер и не переплати</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --neon-blue: #00d4ff;
+            --neon-blue-dim: #0099cc;
+            --cyber-purple: #b829e3;
+            --cyber-purple-dim: #8a1daa;
+            --dark-bg: #0a0a0f;
+            --dark-card: #12121a;
+            --dark-card-hover: #1a1a28;
+            --dark-surface: #16162a;
+            --white: #ffffff;
+            --gray: #8a8a9a;
+            --light-gray: #c0c0d0;
+            --red: #ff3366;
+            --green: #00ff88;
+            --yellow: #ffcc00;
+            --gradient-main: linear-gradient(135deg, var(--neon-blue), var(--cyber-purple));
+            --gradient-red: linear-gradient(135deg, var(--red), #ff6633);
+            --glow-blue: 0 0 20px rgba(0, 212, 255, 0.3);
+            --glow-purple: 0 0 20px rgba(184, 41, 227, 0.3);
+            --glow-red: 0 0 20px rgba(255, 51, 102, 0.3);
+            --section-px: clamp(16px, 4vw, 40px);
+            --section-py: clamp(60px, 10vw, 100px);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--white);
+            overflow-x: hidden;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--dark-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--cyber-purple-dim); border-radius: 3px; }
+
+        img, svg { max-width: 100%; height: auto; }
+
+        /* ====== PARTICLES ====== */
+        #particles-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ====== FLOATING BG ====== */
+        .floating-components {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .float-item {
+            position: absolute;
+            opacity: 0.03;
+            font-size: clamp(2rem, 5vw, 4rem);
+            animation: floatRandom 25s ease-in-out infinite;
+        }
+
+        .float-item:nth-child(1) { top: 20%; left: 5%; animation-delay: 0s; animation-duration: 22s; }
+        .float-item:nth-child(2) { top: 60%; right: 8%; animation-delay: -5s; animation-duration: 28s; }
+        .float-item:nth-child(3) { top: 40%; left: 85%; animation-delay: -10s; animation-duration: 20s; }
+        .float-item:nth-child(4) { bottom: 20%; left: 15%; animation-delay: -8s; animation-duration: 26s; }
+        .float-item:nth-child(5) { top: 10%; right: 20%; animation-delay: -12s; animation-duration: 24s; }
+
+        @keyframes floatRandom {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(30px, -20px) rotate(5deg); }
+            50% { transform: translate(-15px, 25px) rotate(-3deg); }
+            75% { transform: translate(20px, 10px) rotate(7deg); }
+        }
+
+        /* ====== NAVBAR ====== */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px var(--section-px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .navbar.scrolled {
+            background: rgba(10, 10, 15, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .nav-logo {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(1.05rem, 2.5vw, 1.4rem);
+            font-weight: 800;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            cursor: pointer;
+            letter-spacing: 2px;
+            white-space: nowrap;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: clamp(16px, 3vw, 30px);
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px; left: 0;
+            width: 0; height: 2px;
+            background: var(--gradient-main);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover { color: var(--neon-blue); }
+        .nav-links a:hover::after { width: 100%; }
+
+        .nav-burger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+            padding: 8px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .nav-burger span {
+            width: 28px; height: 2px;
+            background: var(--neon-blue);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 2px;
+        }
+
+        /* ====== HERO ====== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px var(--section-px) 80px;
+            overflow: hidden;
+        }
+
+        .hero-bg-grid {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 1;
+        }
+
+        .hero-glow-1 {
+            position: absolute;
+            top: -200px; right: -200px;
+            width: min(600px, 80vw); height: min(600px, 80vw);
+            background: radial-gradient(circle, rgba(184, 41, 227, 0.15), transparent 70%);
+            border-radius: 50%;
+            z-index: 1;
+            animation: float1 8s ease-in-out infinite;
+        }
+
+        .hero-glow-2 {
+            position: absolute;
+            bottom: -150px; left: -150px;
+            width: min(500px, 70vw); height: min(500px, 70vw);
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.1), transparent 70%);
+            border-radius: 50%;
+            z-index: 1;
+            animation: float2 10s ease-in-out infinite;
+        }
+
+        @keyframes float1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-50px, 50px) scale(1.1); }
+        }
+
+        @keyframes float2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -40px) scale(1.05); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 50px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(0.65rem, 1.5vw, 0.8rem);
+            color: var(--neon-blue);
+            margin-bottom: clamp(20px, 4vw, 30px);
+            background: rgba(0, 212, 255, 0.05);
+            animation: fadeInDown 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hero-badge .dot {
+            width: 8px; height: 8px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: pulse-dot 2s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.4); }
+            50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(0, 255, 136, 0); }
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(1.7rem, 5vw, 4rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: clamp(16px, 3vw, 24px);
+            animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+        }
+
+        .hero h1 .highlight {
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero h1 .line { display: block; }
+
+        .hero-subtitle {
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
+            color: var(--light-gray);
+            max-width: 650px;
+            margin: 0 auto clamp(24px, 5vw, 40px);
+            font-weight: 400;
+            line-height: 1.7;
+            animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both;
+            padding: 0 8px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) 0.6s both;
+        }
+
+        .btn-primary {
+            padding: clamp(14px, 2vw, 16px) clamp(28px, 4vw, 40px);
+            background: var(--gradient-main);
+            color: var(--white);
+            border: none;
+            border-radius: 12px;
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 1px;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .btn-primary:hover::before { left: 100%; }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.3), 0 0 60px rgba(184, 41, 227, 0.15);
+        }
+
+        .btn-secondary {
+            padding: clamp(14px, 2vw, 16px) clamp(28px, 4vw, 40px);
+            background: transparent;
+            color: var(--light-gray);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--neon-blue);
+            color: var(--neon-blue);
+            transform: translateY(-3px);
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: clamp(30px, 6vw, 50px);
+            margin-top: clamp(36px, 7vw, 60px);
+            animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) 0.8s both;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat { text-align: center; }
+
+        .hero-stat-value {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(1.4rem, 3vw, 1.8rem);
+            font-weight: 700;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-stat-label {
+            font-size: clamp(0.7rem, 1.2vw, 0.8rem);
+            color: var(--gray);
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ====== SECTIONS COMMON ====== */
+        section {
+            position: relative;
+            z-index: 2;
+            padding: var(--section-py) var(--section-px);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: clamp(36px, 7vw, 60px);
+        }
+
+        .section-tag {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(0.65rem, 1.2vw, 0.75rem);
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 16px;
+            padding: 6px 16px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 50px;
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .section-tag.red {
+            color: var(--red);
+            border-color: rgba(255, 51, 102, 0.2);
+            background: rgba(255, 51, 102, 0.05);
+        }
+
+        .section-tag.green {
+            color: var(--green);
+            border-color: rgba(0, 255, 136, 0.2);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(1.4rem, 3.5vw, 2.4rem);
+            font-weight: 700;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            font-size: clamp(0.88rem, 1.8vw, 1.05rem);
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; width: 100%; }
+
+        .section-separator {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), rgba(184, 41, 227, 0.2), transparent);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* ====== GOALS ====== */
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(14px, 2vw, 24px);
+        }
+
+        .goal-card {
+            background: var(--dark-card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: clamp(16px, 2vw, 20px);
+            padding: clamp(28px, 3.5vw, 40px) clamp(22px, 2.5vw, 30px);
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .goal-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--gradient-main);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .goal-card.active::before { transform: scaleX(1); }
+
+        .goal-card.active {
+            border-color: rgba(0, 212, 255, 0.4);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), var(--glow-blue);
+            background: var(--dark-card-hover);
+        }
+
+        .goal-card.active.gaming-active {
+            border-color: rgba(184, 41, 227, 0.4);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), var(--glow-purple);
+        }
+
+        .goal-card.active.gaming-active::before {
+            background: linear-gradient(135deg, var(--cyber-purple), #ff66cc);
+        }
+
+        .goal-card.active.pro-active {
+            border-color: rgba(0, 255, 136, 0.4);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+
+        .goal-card.active.pro-active::before {
+            background: linear-gradient(135deg, var(--green), var(--neon-blue));
+        }
+
+        .goal-icon {
+            width: clamp(52px, 6vw, 64px);
+            height: clamp(52px, 6vw, 64px);
+            border-radius: clamp(12px, 1.5vw, 16px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1.3rem, 2vw, 1.6rem);
+            margin-bottom: clamp(18px, 2.5vw, 24px);
+        }
+
+        .goal-icon.office { background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.2); }
+        .goal-icon.gaming { background: rgba(184, 41, 227, 0.1); border: 1px solid rgba(184, 41, 227, 0.2); }
+        .goal-icon.pro { background: rgba(0, 255, 136, 0.1); border: 1px solid rgba(0, 255, 136, 0.2); }
+
+        .goal-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .goal-desc {
+            color: var(--gray);
+            font-size: clamp(0.82rem, 1.3vw, 0.9rem);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .goal-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+        .goal-tag {
+            padding: 4px 12px;
+            font-size: clamp(0.65rem, 1vw, 0.75rem);
+            font-family: 'JetBrains Mono', monospace;
+            border-radius: 6px;
+            background: rgba(0, 212, 255, 0.08);
+            color: var(--neon-blue);
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            white-space: nowrap;
+        }
+
+        .goal-tag.purple { background: rgba(184, 41, 227, 0.08); color: var(--cyber-purple); border-color: rgba(184, 41, 227, 0.15); }
+        .goal-tag.green { background: rgba(0, 255, 136, 0.08); color: var(--green); border-color: rgba(0, 255, 136, 0.15); }
+
+        .goal-budget { margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.06); }
+        .goal-budget-label { font-size: clamp(0.65rem, 1vw, 0.75rem); color: var(--gray); margin-bottom: 4px; }
+        .goal-budget-bar { width: 100%; height: 4px; background: rgba(255, 255, 255, 0.06); border-radius: 4px; overflow: hidden; }
+        .goal-budget-fill { height: 100%; border-radius: 4px; transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .goal-budget-fill.low { width: 30%; background: var(--neon-blue); }
+        .goal-budget-fill.mid { width: 60%; background: var(--cyber-purple); }
+        .goal-budget-fill.high { width: 90%; background: var(--green); }
+
+        /* ====== SELECTED BANNER ====== */
+        .selected-goal-banner {
+            text-align: center;
+            margin-bottom: clamp(24px, 4vw, 40px);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .selected-goal-banner.show { opacity: 1; transform: translateY(0); }
+
+        .selected-goal-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(0.72rem, 1.3vw, 0.85rem);
+            font-weight: 600;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            background: rgba(0, 212, 255, 0.05);
+            color: var(--neon-blue);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .selected-goal-pill.gaming { border-color: rgba(184, 41, 227, 0.3); background: rgba(184, 41, 227, 0.05); color: var(--cyber-purple); }
+        .selected-goal-pill.pro { border-color: rgba(0, 255, 136, 0.3); background: rgba(0, 255, 136, 0.05); color: var(--green); }
+
+        .selected-goal-pill .pill-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--neon-blue);
+            animation: pulse-dot 2s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+
+        .selected-goal-pill.gaming .pill-dot { background: var(--cyber-purple); }
+        .selected-goal-pill.pro .pill-dot { background: var(--green); }
+
+        /* ====== ALGORITHM ====== */
+        .algo-section {
+            background: linear-gradient(180deg, var(--dark-bg) 0%, var(--dark-surface) 50%, var(--dark-bg) 100%);
+        }
+
+        .algo-timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .algo-timeline-line {
+            position: absolute;
+            left: 40px;
+            top: 0; bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--neon-blue), var(--cyber-purple), var(--neon-blue));
+            opacity: 0.3;
+            transition: background 0.6s ease;
+        }
+
+        .algo-timeline-line.gaming { background: linear-gradient(to bottom, var(--cyber-purple), #ff66cc, var(--cyber-purple)); }
+        .algo-timeline-line.pro { background: linear-gradient(to bottom, var(--green), var(--neon-blue), var(--green)); }
+
+        .algo-step {
+            display: flex;
+            gap: clamp(14px, 2.5vw, 30px);
+            margin-bottom: clamp(24px, 4vw, 40px);
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .algo-step.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .algo-step.step-exit {
+            opacity: 0;
+            transform: translateX(-50px) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .algo-step.step-enter {
+            opacity: 0;
+            transform: translateX(50px) scale(0.95);
+        }
+
+        .algo-step.step-enter.visible {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .algo-step-number {
+            width: clamp(52px, 7vw, 80px);
+            min-width: clamp(52px, 7vw, 80px);
+            height: clamp(52px, 7vw, 80px);
+            border-radius: clamp(14px, 2vw, 20px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(0.95rem, 1.5vw, 1.4rem);
+            font-weight: 800;
+            position: relative;
+            z-index: 2;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-shrink: 0;
+        }
+
+        .algo-step-card {
+            flex: 1;
+            background: var(--dark-card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: clamp(12px, 1.5vw, 16px);
+            padding: clamp(20px, 3vw, 30px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            min-width: 0;
+        }
+
+        .algo-step-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .algo-step-emoji { font-size: clamp(1.2rem, 1.8vw, 1.4rem); flex-shrink: 0; }
+
+        .algo-step-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(0.85rem, 1.4vw, 1.05rem);
+            font-weight: 700;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .algo-step-desc {
+            color: var(--gray);
+            font-size: clamp(0.82rem, 1.3vw, 0.9rem);
+            line-height: 1.7;
+        }
+
+        .algo-step-desc strong { color: var(--light-gray); }
+
+        .algo-step-tip {
+            margin-top: 16px;
+            padding: 12px 16px;
+            background: rgba(0, 212, 255, 0.05);
+            border-left: 3px solid var(--neon-blue);
+            border-radius: 0 8px 8px 0;
+            font-size: clamp(0.75rem, 1.1vw, 0.85rem);
+            color: var(--light-gray);
+            font-family: 'JetBrains Mono', monospace;
+            word-break: break-word;
+        }
+
+        .algo-step-tip.purple { background: rgba(184, 41, 227, 0.05); border-left-color: var(--cyber-purple); }
+        .algo-step-tip.green { background: rgba(0, 255, 136, 0.05); border-left-color: var(--green); }
+        .algo-step-tip.yellow { background: rgba(255, 204, 0, 0.05); border-left-color: var(--yellow); }
+        .algo-step-tip.red { background: rgba(255, 51, 102, 0.05); border-left-color: var(--red); }
+
+        .priority-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: clamp(0.6rem, 0.9vw, 0.7rem);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .priority-badge.high { background: rgba(255, 51, 102, 0.1); color: var(--red); border: 1px solid rgba(255, 51, 102, 0.2); }
+        .priority-badge.medium { background: rgba(255, 204, 0, 0.1); color: var(--yellow); border: 1px solid rgba(255, 204, 0, 0.2); }
+        .priority-badge.low { background: rgba(0, 255, 136, 0.1); color: var(--green); border: 1px solid rgba(0, 255, 136, 0.2); }
+
+        /* Prompt */
+        .algo-prompt {
+            text-align: center;
+            padding: clamp(36px, 6vw, 60px) clamp(24px, 4vw, 40px);
+            border: 2px dashed rgba(0, 212, 255, 0.15);
+            border-radius: 20px;
+            background: rgba(0, 212, 255, 0.02);
+            max-width: 700px;
+            margin: 0 auto;
+            transition: all 0.5s ease;
+        }
+
+        .algo-prompt .prompt-icon {
+            font-size: clamp(2.2rem, 4vw, 3rem);
+            margin-bottom: 20px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .algo-prompt h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            margin-bottom: 12px;
+            color: var(--neon-blue);
+        }
+
+        .algo-prompt p { color: var(--gray); font-size: clamp(0.85rem, 1.4vw, 0.95rem); line-height: 1.7; }
+
+        .algo-prompt .prompt-arrow {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--neon-blue);
+            font-size: 1.2rem;
+            animation: bounceUp 1.5s ease-in-out infinite;
+        }
+
+        @keyframes bounceUp {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* ====== ERRORS ====== */
+        .errors-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(14px, 2vw, 24px);
+        }
+
+        .error-card {
+            background: var(--dark-card);
+            border: 1px solid rgba(255, 51, 102, 0.15);
+            border-radius: clamp(16px, 2vw, 20px);
+            padding: clamp(26px, 3vw, 35px) clamp(22px, 2.5vw, 30px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .error-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--gradient-red);
+        }
+
+        .error-card::after {
+            content: '';
+            position: absolute;
+            top: -50%; right: -50%;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(255, 51, 102, 0.05), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .error-card.highlighted {
+            border-color: rgba(255, 51, 102, 0.5);
+            box-shadow: 0 0 30px rgba(255, 51, 102, 0.15);
+        }
+
+        .error-card.highlighted .error-relevance { opacity: 1; }
+
+        .error-relevance {
+            margin-top: 16px;
+            padding: 8px 12px;
+            background: rgba(255, 204, 0, 0.05);
+            border: 1px solid rgba(255, 204, 0, 0.15);
+            border-radius: 8px;
+            font-size: clamp(0.65rem, 1vw, 0.75rem);
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--yellow);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .error-icon-wrap {
+            width: clamp(48px, 5.5vw, 56px);
+            height: clamp(48px, 5.5vw, 56px);
+            border-radius: clamp(12px, 1.5vw, 14px);
+            background: rgba(255, 51, 102, 0.1);
+            border: 1px solid rgba(255, 51, 102, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1.2rem, 1.8vw, 1.4rem);
+            margin-bottom: 20px;
+        }
+
+        .error-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(0.6rem, 0.9vw, 0.7rem);
+            color: var(--red);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .error-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(0.88rem, 1.4vw, 1.05rem);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .error-desc {
+            color: var(--gray);
+            font-size: clamp(0.82rem, 1.2vw, 0.9rem);
+            line-height: 1.7;
+        }
+
+        .error-severity {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .severity-dots { display: flex; gap: 4px; }
+
+        .severity-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 51, 102, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .severity-dot.active {
+            background: var(--red);
+            box-shadow: 0 0 8px rgba(255, 51, 102, 0.5);
+        }
+
+        .severity-label {
+            font-size: clamp(0.6rem, 0.9vw, 0.7rem);
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--red);
+        }
+
+        /* ====== CHECKLIST ====== */
+        .checklist-section {
+            background: linear-gradient(180deg, var(--dark-bg) 0%, var(--dark-surface) 50%, var(--dark-bg) 100%);
+        }
+
+        .checklist-container { max-width: 700px; margin: 0 auto; }
+
+        .checklist-card {
+            background: var(--dark-card);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            border-radius: clamp(16px, 2vw, 20px);
+            padding: clamp(24px, 4vw, 40px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .checklist-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--green), var(--neon-blue));
+        }
+
+        .checklist-progress { margin-bottom: clamp(20px, 3vw, 30px); }
+
+        .checklist-progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: clamp(0.78rem, 1.2vw, 0.85rem);
+        }
+
+        .checklist-progress-label { color: var(--gray); }
+        .checklist-progress-value { font-family: 'JetBrains Mono', monospace; color: var(--green); }
+
+        .checklist-progress-bar {
+            width: 100%; height: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .checklist-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--green), var(--neon-blue));
+            border-radius: 6px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 0%;
+        }
+
+        .checklist-items {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: clamp(12px, 2vw, 16px);
+            padding: clamp(14px, 2vw, 16px) clamp(16px, 2vw, 20px);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .checklist-item:hover {
+            background: rgba(0, 255, 136, 0.03);
+            border-color: rgba(0, 255, 136, 0.1);
+        }
+
+        .checklist-item.checked {
+            background: rgba(0, 255, 136, 0.05);
+            border-color: rgba(0, 255, 136, 0.2);
+        }
+
+        .checklist-checkbox {
+            width: 24px; height: 24px; min-width: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-shrink: 0;
+        }
+
+        .checklist-item.checked .checklist-checkbox {
+            background: var(--green);
+            border-color: var(--green);
+            box-shadow: 0 0 12px rgba(0, 255, 136, 0.3);
+        }
+
+        .checklist-checkmark {
+            color: var(--dark-bg);
+            font-size: 0.8rem;
+            font-weight: 700;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .checklist-item.checked .checklist-checkmark {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .checklist-text {
+            font-size: clamp(0.84rem, 1.3vw, 0.95rem);
+            color: var(--light-gray);
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item.checked .checklist-text { color: var(--green); }
+
+        .checklist-complete-msg {
+            text-align: center;
+            margin-top: 24px;
+            padding: 20px;
+            background: rgba(0, 255, 136, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.15);
+            border-radius: 12px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .checklist-complete-msg.show { opacity: 1; transform: translateY(0); }
+        .checklist-complete-msg .emoji { font-size: clamp(1.6rem, 3vw, 2rem); margin-bottom: 8px; }
+
+        .checklist-complete-msg .text {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(0.82rem, 1.3vw, 0.95rem);
+            color: var(--green);
+        }
+
+        /* ====== FOOTER ====== */
+        .footer {
+            position: relative;
+            z-index: 2;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding: clamp(32px, 5vw, 50px) var(--section-px);
+            text-align: center;
+        }
+
+        .footer-content { max-width: 800px; margin: 0 auto; }
+
+        .footer-logo {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            font-weight: 800;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: clamp(18px, 3vw, 30px);
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: clamp(0.8rem, 1.2vw, 0.9rem);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .footer-link:hover { color: var(--neon-blue); }
+        .footer-link svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+        .footer-divider { width: 60px; height: 2px; background: var(--gradient-main); margin: 24px auto; border-radius: 2px; }
+        .footer-credit { font-size: clamp(0.78rem, 1.2vw, 0.85rem); color: var(--gray); }
+        .footer-credit span { color: var(--neon-blue); }
+        .footer-tech { margin-top: 12px; font-size: clamp(0.65rem, 1vw, 0.75rem); font-family: 'JetBrains Mono', monospace; color: rgba(255, 255, 255, 0.15); }
+
+        /* ====== ANIMATIONS ====== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ====== RESPONSIVE ====== */
+        @media (max-width: 1024px) {
+            .goals-grid, .errors-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 900px) {
+            .goals-grid { grid-template-columns: repeat(2, 1fr); }
+            .goals-grid .goal-card:last-child {
+                grid-column: 1 / -1;
+                max-width: 500px;
+                justify-self: center;
+                width: 100%;
+            }
+            .errors-grid { grid-template-columns: repeat(2, 1fr); }
+            .errors-grid .error-card:last-child {
+                grid-column: 1 / -1;
+                max-width: 500px;
+                justify-self: center;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 0; left: 0;
+                width: 100%; height: 100vh; height: 100dvh;
+                background: rgba(10, 10, 15, 0.98);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 28px;
+                z-index: 999;
+            }
+
+            .nav-links.open { display: flex; }
+            .nav-links a { font-size: 1.15rem; }
+            .nav-burger { display: flex; }
+
+            .nav-burger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+            .nav-burger.open span:nth-child(2) { opacity: 0; }
+            .nav-burger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+            .algo-timeline-line { left: 26px; }
+            .algo-step-header { flex-wrap: wrap; gap: 8px; }
+            .priority-badge { margin-left: 0; }
+        }
+
+        @media (max-width: 600px) {
+            .goals-grid { grid-template-columns: 1fr; }
+            .goals-grid .goal-card:last-child { grid-column: auto; max-width: none; }
+            .errors-grid { grid-template-columns: 1fr; }
+            .errors-grid .error-card:last-child { grid-column: auto; max-width: none; }
+
+            .hero-buttons { flex-direction: column; align-items: stretch; }
+            .btn-primary, .btn-secondary { justify-content: center; width: 100%; }
+            .hero-stats { flex-direction: row; justify-content: space-around; }
+
+            .algo-step { gap: 12px; }
+            .algo-step-number { width: 46px; min-width: 46px; height: 46px; border-radius: 12px; font-size: 0.85rem; }
+            .algo-timeline-line { left: 23px; }
+            .algo-step-card { padding: 18px; }
+        }
+
+        @media (max-width: 380px) {
+            .hero h1 { font-size: 1.45rem; }
+            .goal-tags { gap: 5px; }
+            .goal-tag { padding: 3px 8px; font-size: 0.62rem; }
+            .algo-step-number { width: 40px; min-width: 40px; height: 40px; font-size: 0.78rem; border-radius: 10px; }
+            .algo-timeline-line { left: 20px; }
+        }
+
+        @media (max-height: 500px) and (orientation: landscape) {
+            .hero { min-height: auto; padding-top: 80px; padding-bottom: 40px; }
+            .hero-stats { margin-top: 24px; }
+        }
+
+        @media (min-width: 1400px) { .container { max-width: 1300px; } }
+        @media (min-width: 1800px) { :root { --section-px: 60px; } .container { max-width: 1400px; } }
+
+        @media (hover: hover) and (pointer: fine) {
+            .goal-card:hover {
+                transform: translateY(-8px);
+                border-color: rgba(0, 212, 255, 0.2);
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), var(--glow-blue);
+                background: var(--dark-card-hover);
+            }
+            .goal-card:hover::before { transform: scaleX(1); }
+            .error-card:hover {
+                transform: translateY(-6px);
+                border-color: rgba(255, 51, 102, 0.3);
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), var(--glow-red);
+            }
+            .algo-step:hover .algo-step-card {
+                border-color: rgba(0, 212, 255, 0.15);
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            }
+            .algo-step:hover .algo-step-number { transform: scale(1.05); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.2s !important;
+            }
+            html { scroll-behavior: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="particles-canvas"></canvas>
+
+    <div class="floating-components">
+        <div class="float-item">🔲</div>
+        <div class="float-item">⬡</div>
+        <div class="float-item">◈</div>
+        <div class="float-item">⬢</div>
+        <div class="float-item">◇</div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-logo">PC—GUIDE</div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#goals" onclick="closeMenu()">Цель</a></li>
+            <li><a href="#algorithm" onclick="closeMenu()">Алгоритм</a></li>
+            <li><a href="#errors" onclick="closeMenu()">Ошибки</a></li>
+            <li><a href="#checklist" onclick="closeMenu()">Чек-лист</a></li>
+        </ul>
+        <div class="nav-burger" id="burger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="hero">
+        <div class="hero-bg-grid"></div>
+        <div class="hero-glow-1"></div>
+        <div class="hero-glow-2"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="dot"></span>
+                Обновлено для 2026
+            </div>
+            <h1>
+                <span class="line"><span class="highlight">PC-GUIDE:</span></span>
+                <span class="line">Собери компьютер</span>
+                <span class="line">и не переплати</span>
+            </h1>
+            <p class="hero-subtitle">
+                Пошаговый алгоритм подбора комплектующих.
+                Избегай маркетинговых ловушек и ошибок новичка.
+            </p>
+            <div class="hero-buttons">
+                <a href="#goals" class="btn-primary">⚡ Начать сборку</a>
+                <a href="#algorithm" class="btn-secondary">📖 Читать гайд</a>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-value" id="stat1">5</div>
+                    <div class="hero-stat-label">Шагов подбора</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value" id="stat2">3</div>
+                    <div class="hero-stat-label">Типа сборок</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value" id="stat3">∞</div>
+                    <div class="hero-stat-label">Часов экономии</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-separator"></div>
+
+    <!-- Goals -->
+    <section id="goals">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="section-tag">Шаг 0</div>
+                <h2 class="section-title">Определи цель сборки</h2>
+                <p class="section-subtitle">Прежде чем смотреть железо — пойми, для чего тебе ПК. От этого зависит всё.</p>
+            </div>
+            <div class="goals-grid">
+                <div class="goal-card fade-in" data-delay="100" onclick="selectGoal(this, 'office')">
+                    <div class="goal-icon office">🖥️</div>
+                    <div class="goal-title">Офис / Дом</div>
+                    <div class="goal-desc">Документы, браузер, кино, учёба. Здесь не нужна дискретная видеокарта — встройка в процессоре справится.</div>
+                    <div class="goal-tags">
+                        <span class="goal-tag">SSD обязателен</span>
+                        <span class="goal-tag">Тишина</span>
+                        <span class="goal-tag">Без GPU</span>
+                    </div>
+                    <div class="goal-budget">
+                        <div class="goal-budget-label">Уровень бюджета</div>
+                        <div class="goal-budget-bar"><div class="goal-budget-fill low"></div></div>
+                    </div>
+                </div>
+                <div class="goal-card fade-in" data-delay="200" onclick="selectGoal(this, 'gaming')">
+                    <div class="goal-icon gaming">🎮</div>
+                    <div class="goal-title">Игры</div>
+                    <div class="goal-desc">Видеокарта — королева бала. Отдавай ей до 40% бюджета. Процессор должен её раскрыть, а не тормозить.</div>
+                    <div class="goal-tags">
+                        <span class="goal-tag purple">GPU = 40% бюджета</span>
+                        <span class="goal-tag purple">16Гб RAM</span>
+                        <span class="goal-tag purple">FPS тесты</span>
+                    </div>
+                    <div class="goal-budget">
+                        <div class="goal-budget-label">Уровень бюджета</div>
+                        <div class="goal-budget-bar"><div class="goal-budget-fill mid"></div></div>
+                    </div>
+                </div>
+                <div class="goal-card fade-in" data-delay="300" onclick="selectGoal(this, 'pro')">
+                    <div class="goal-icon pro">⚙️</div>
+                    <div class="goal-title">Профи / Работа</div>
+                    <div class="goal-desc">3D, видеомонтаж, стриминг, разработка. Нужен мощный многоядерный процессор и много оперативки.</div>
+                    <div class="goal-tags">
+                        <span class="goal-tag green">Мощный CPU</span>
+                        <span class="goal-tag green">RAM ≥ 32Гб</span>
+                        <span class="goal-tag green">Быстрый NVMe</span>
+                    </div>
+                    <div class="goal-budget">
+                        <div class="goal-budget-label">Уровень бюджета</div>
+                        <div class="goal-budget-bar"><div class="goal-budget-fill high"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-separator"></div>
+
+    <!-- Algorithm -->
+    <section class="algo-section" id="algorithm">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="section-tag" id="algoTag">Главное</div>
+                <h2 class="section-title" id="algoTitle">Алгоритм подбора</h2>
+                <p class="section-subtitle" id="algoSubtitle">Выбери цель сборки выше — и шаги адаптируются под твою задачу.</p>
+            </div>
+
+            <div class="selected-goal-banner" id="selectedBanner">
+                <div class="selected-goal-pill" id="selectedPill">
+                    <span class="pill-dot"></span>
+                    <span id="selectedPillText">Сборка: Офис / Дом</span>
+                </div>
+            </div>
+
+            <div id="algoContent">
+                <div class="algo-prompt" id="algoPrompt">
+                    <div class="prompt-icon">☝️</div>
+                    <h3>Сначала выбери цель</h3>
+                    <p>Нажми на одну из карточек выше — «Офис», «Игры» или «Профи» — и здесь появится персонализированный алгоритм сборки.</p>
+                    <div class="prompt-arrow">↑</div>
+                </div>
+
+                <div class="algo-timeline" id="algoTimeline" style="display: none;">
+                    <div class="algo-timeline-line" id="algoTimelineLine"></div>
+                    <div id="algoSteps"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-separator"></div>
+
+    <!-- Errors -->
+    <section id="errors">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="section-tag red">⚠ Внимание</div>
+                <h2 class="section-title">Красная зона: Ошибки</h2>
+                <p class="section-subtitle">Эти промахи совершают даже опытные пользователи. Не попадайся.</p>
+            </div>
+            <div class="errors-grid">
+                <div class="error-card fade-in" data-delay="100" id="errorBottleneck">
+                    <div class="error-icon-wrap">🍾</div>
+                    <div class="error-label">Критическая ошибка</div>
+                    <h3 class="error-title">"Bottleneck" — Бутылочное горлышко</h3>
+                    <p class="error-desc">Не ставь RTX 4080 к процессору Pentium. Мощная видеокарта будет простаивать, пока слабый CPU не успевает подготавливать кадры. Деньги на ветер.</p>
+                    <div class="error-severity">
+                        <div class="severity-dots">
+                            <div class="severity-dot active"></div><div class="severity-dot active"></div><div class="severity-dot active"></div><div class="severity-dot active"></div><div class="severity-dot active"></div>
+                        </div>
+                        <span class="severity-label">КРИТИЧНО</span>
+                    </div>
+                    <div class="error-relevance" id="errorBottleneckRel"></div>
+                </div>
+                <div class="error-card fade-in" data-delay="200" id="errorCase">
+                    <div class="error-icon-wrap">🔥</div>
+                    <div class="error-label">Частая ошибка</div>
+                    <h3 class="error-title">Глухой корпус — духовка</h3>
+                    <p class="error-desc">Красивый корпус со сплошной передней панелью = перегрев. Выбирай корпус с сеткой спереди (Mesh) для продува.</p>
+                    <div class="error-severity">
+                        <div class="severity-dots">
+                            <div class="severity-dot active"></div><div class="severity-dot active"></div><div class="severity-dot active"></div><div class="severity-dot active"></div><div class="severity-dot"></div>
+                        </div>
+                        <span class="severity-label">ВЫСОКО</span>
+                    </div>
+                    <div class="error-relevance" id="errorCaseRel"></div>
+                </div>
+                <div class="error-card fade-in" data-delay="300" id="errorPSU">
+                    <div class="error-icon-wrap">💀</div>
+                    <div class="error-label">Опасная ошибка</div>
+                    <h3 class="error-title">Экономия на блоке питания</h3>
+                    <p class="error-desc">Дешёвый ноунейм-БП может сжечь всю систему одним скачком. Это единственный компонент, на котором экономия может стоить всего ПК. Бери бренд.</p>
+                    <div class="error-severity">
+                        <div class="severity-dots">
+                            <div class="severity-dot active"></div><div class="severity-dot active"></div><div class="severity-dot active"></div><div class="severity-dot active"></div><div class="severity-dot active"></div>
+                        </div>
+                        <span class="severity-label">КРИТИЧНО</span>
+                    </div>
+                    <div class="error-relevance" id="errorPSURel"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-separator"></div>
+
+    <!-- Checklist -->
+    <section class="checklist-section" id="checklist">
+        <div class="container">
+            <div class="section-header fade-in">
+                <div class="section-tag green">✓ Финал</div>
+                <h2 class="section-title">Финальный чек-лист</h2>
+                <p class="section-subtitle">Перед покупкой пройдись по каждому пункту. Отметь галочками — убедись, что ничего не забыл.</p>
+            </div>
+            <div class="checklist-container fade-in">
+                <div class="checklist-card">
+                    <div class="checklist-progress">
+                        <div class="checklist-progress-text">
+                            <span class="checklist-progress-label">Прогресс проверки</span>
+                            <span class="checklist-progress-value" id="progressText">0 / 6</span>
+                        </div>
+                        <div class="checklist-progress-bar">
+                            <div class="checklist-progress-fill" id="progressBar"></div>
+                        </div>
+                    </div>
+                    <div class="checklist-items" id="checklistItems">
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <div class="checklist-checkbox"><span class="checklist-checkmark">✓</span></div>
+                            <span class="checklist-text">Сокет процессора совпадает с материнской платой?</span>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <div class="checklist-checkbox"><span class="checklist-checkmark">✓</span></div>
+                            <span class="checklist-text">Кулер влезает в корпус по высоте?</span>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <div class="checklist-checkbox"><span class="checklist-checkmark">✓</span></div>
+                            <span class="checklist-text">Видеокарта влезает в корпус по длине?</span>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <div class="checklist-checkbox"><span class="checklist-checkmark">✓</span></div>
+                            <span class="checklist-text">SSD формата M.2 NVMe выбран?</span>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <div class="checklist-checkbox"><span class="checklist-checkmark">✓</span></div>
+                            <span class="checklist-text">RAM куплена комплектом (Kit of 2)?</span>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <div class="checklist-checkbox"><span class="checklist-checkmark">✓</span></div>
+                            <span class="checklist-text">Блок питания с запасом +30% и сертификатом 80 PLUS?</span>
+                        </div>
+                    </div>
+                    <div class="checklist-complete-msg" id="completeMsg">
+                        <div class="emoji">🎉</div>
+                        <div class="text">Всё проверено! Можно покупать!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">PC—GUIDE 2026</div>
+            <div class="footer-links">
+                <a href="https://www.dns-shop.ru/configurator/" target="_blank" rel="noopener" class="footer-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    DNS Конфигуратор
+                </a>
+                <a href="https://www.userbenchmark.com/" target="_blank" rel="noopener" class="footer-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    UserBenchmark
+                </a>
+                <a href="https://pcpartpicker.com/" target="_blank" rel="noopener" class="footer-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    PCPartPicker
+                </a>
+            </div>
+            <div class="footer-divider"></div>
+            <p class="footer-credit">Проект выполнил ученик <span>Мамбетов Булат</span>. 2026 год.</p>
+            <p class="footer-tech">HTML • CSS • JavaScript • Built with ❤️</p>
+        </div>
+    </footer>
+
+    <script>
+        // ==========================================
+        // ALGORITHM DATA (full text from v2)
+        // ==========================================
+        const algorithmData = {
+            office: {
+                label: 'Сборка: Офис / Дом',
+                pillClass: '',
+                lineClass: '',
+                subtitle: 'Для офисной сборки главное — тишина, энергоэффективность и быстрый SSD. Без лишних трат.',
+                steps: [
+                    {
+                        num: '01', emoji: '🧠',
+                        title: 'Процессор (CPU) со встроенной графикой',
+                        desc: 'Выбирай процессор <strong>со встроенным видеоядром</strong> (iGPU). Intel Core i3 / Ryzen 5 с индексом «G» (например, Ryzen 5 8600G). Дискретная видеокарта не нужна — экономия 15-30 тысяч.',
+                        tip: '💡 Убедись, что в названии процессора нет буквы «F» (Intel) — это версии БЕЗ встроенной графики.',
+                        tipClass: '',
+                        priority: 'medium', priorityText: 'Средний приоритет',
+                        colorBg: 'rgba(0, 212, 255, 0.1)', colorBorder: 'rgba(0, 212, 255, 0.3)', colorText: '#00d4ff'
+                    },
+                    {
+                        num: '02', emoji: '🔌',
+                        title: 'Материнская плата (компактная)',
+                        desc: 'Формат <strong>Micro-ATX</strong> — идеален для офиса. Дешевле, компактнее. Главное — совпадение сокета. VRM-радиаторы менее критичны, т.к. процессор холодный.',
+                        tip: '💡 Для офиса не нужна топовая плата. B-серия чипсетов (B760, B650) — отличный выбор.',
+                        tipClass: '',
+                        priority: 'low', priorityText: 'Экономь тут',
+                        colorBg: 'rgba(100, 130, 255, 0.1)', colorBorder: 'rgba(100, 130, 255, 0.3)', colorText: '#6482ff'
+                    },
+                    {
+                        num: '03', emoji: '💾',
+                        title: 'SSD — главный приоритет!',
+                        desc: 'Для офиса SSD важнее всего. Система будет <strong>летать</strong>: загрузка за 5 секунд, мгновенное открытие программ. Бери <strong>M.2 NVMe</strong> от 500 ГБ.',
+                        tip: '🚀 SSD — это то, что отличает «тормозящий» ПК от «быстрого». Даже дешёвый NVMe в 10 раз быстрее HDD.',
+                        tipClass: 'green',
+                        priority: 'high', priorityText: 'Главный приоритет',
+                        colorBg: 'rgba(184, 41, 227, 0.1)', colorBorder: 'rgba(184, 41, 227, 0.3)', colorText: '#b829e3'
+                    },
+                    {
+                        num: '04', emoji: '🧩',
+                        title: 'Оперативная память (8-16 ГБ)',
+                        desc: 'Для офиса хватит <strong>2×4 ГБ</strong> или <strong>2×8 ГБ</strong>. Всегда 2 планки для двухканала! Это особенно важно для встроенной графики — она использует RAM.',
+                        tip: '⚡ Встройка iGPU берёт память из RAM — двухканал даёт ей +30-50% производительности!',
+                        tipClass: 'yellow',
+                        priority: 'medium', priorityText: 'Важно для iGPU',
+                        colorBg: 'rgba(0, 255, 136, 0.1)', colorBorder: 'rgba(0, 255, 136, 0.3)', colorText: '#00ff88'
+                    },
+                    {
+                        num: '05', emoji: '🔇',
+                        title: 'Тихий корпус + тихий БП',
+                        desc: 'Блок питания 400-500Вт с <strong>80 PLUS</strong> — за глаза. Выбирай корпус с шумоизоляцией или просто компактный. Кулер — башенный бесшумный.',
+                        tip: '🔇 Совет: ищи БП с режимом «0 dB» — вентилятор не крутится при малой нагрузке. Полная тишина.',
+                        tipClass: '',
+                        priority: 'low', priorityText: 'Комфорт',
+                        colorBg: 'rgba(255, 204, 0, 0.1)', colorBorder: 'rgba(255, 204, 0, 0.3)', colorText: '#ffcc00'
+                    }
+                ],
+                errors: {
+                    bottleneck: { highlighted: false, text: '' },
+                    case: { highlighted: false, text: '' },
+                    psu: { highlighted: true, text: '💀 Даже в бюджетной сборке — не экономь на БП!' }
+                }
+            },
+            gaming: {
+                label: 'Сборка: Игры',
+                pillClass: 'gaming',
+                lineClass: 'gaming',
+                subtitle: 'Видеокарта — 40% бюджета. Процессор должен её раскрыть. Каждый шаг нацелен на максимум FPS.',
+                steps: [
+                    {
+                        num: '01', emoji: '🎨',
+                        title: 'Видеокарта (GPU) — НАЧНИ С НЕЁ!',
+                        desc: 'В игровой сборке всё крутится вокруг GPU. Отдай ей <strong>40% бюджета</strong>. Не смотри на объём памяти — смотри <strong>тесты FPS</strong> в нужных играх и разрешении. Избегай карт с шиной 64/96 бит.',
+                        tip: '🎮 Бюджет 80К? Видеокарта = 32К. Ищи бенчмарки на YouTube: «[название карты] + [твоя игра] + [разрешение]».',
+                        tipClass: 'purple',
+                        priority: 'high', priorityText: '50% бюджета!',
+                        colorBg: 'rgba(184, 41, 227, 0.1)', colorBorder: 'rgba(184, 41, 227, 0.3)', colorText: '#b829e3'
+                    },
+                    {
+                        num: '02', emoji: '🧠',
+                        title: 'Процессор (CPU) — для раскрытия GPU',
+                        desc: 'Процессор должен <strong>успевать за видеокартой</strong>. Слабый CPU = Bottleneck, карта простаивает. <strong>i5 / Ryzen 5</strong> последнего поколения — золотая середина. i7/R7 — для 4K и стриминга.',
+                        tip: '⚠️ Не ставь RTX 4070 к старому i3! Проверяй совместимость на pc-builds.com/bottleneck-calculator.',
+                        tipClass: 'red',
+                        priority: 'high', priorityText: 'Раскрытие GPU',
+                        colorBg: 'rgba(255, 102, 204, 0.1)', colorBorder: 'rgba(255, 102, 204, 0.3)', colorText: '#ff66cc'
+                    },
+                    {
+                        num: '03', emoji: '🔌',
+                        title: 'Материнская плата (с хорошим VRM)',
+                        desc: 'Для игрового процессора нужна плата <strong>с радиаторами на VRM</strong>. Совпадение сокета — обязательно. Формат ATX даст больше слотов и лучший продув.',
+                        tip: '💡 B-серия чипсетов (B760/B650) — оптимально. Z/X-серия — если планируешь разгон.',
+                        tipClass: '',
+                        priority: 'medium', priorityText: 'Баланс',
+                        colorBg: 'rgba(184, 41, 227, 0.1)', colorBorder: 'rgba(184, 41, 227, 0.3)', colorText: '#b829e3'
+                    },
+                    {
+                        num: '04', emoji: '🧩',
+                        title: 'RAM 16-32 ГБ (быстрая!)',
+                        desc: '<strong>2×8 ГБ</strong> — минимум. Для новых AAA-игр лучше <strong>2×16 ГБ</strong>. Частота важна: DDR5-6000 или DDR4-3600. Всегда Kit of 2 для двухканала!',
+                        tip: '🎯 Тайминги тоже важны. DDR5-6000 CL30 лучше, чем DDR5-7200 CL40. Ищи баланс частоты и таймингов.',
+                        tipClass: 'purple',
+                        priority: 'medium', priorityText: '16-32 ГБ',
+                        colorBg: 'rgba(0, 212, 255, 0.1)', colorBorder: 'rgba(0, 212, 255, 0.3)', colorText: '#00d4ff'
+                    },
+                    {
+                        num: '05', emoji: '⚡',
+                        title: 'БП с большим запасом + Mesh-корпус',
+                        desc: 'Современные GPU жрут 200-350Вт пиково. Бери БП <strong>700-850Вт, 80 PLUS Gold</strong>. Корпус — только <strong>Mesh</strong> (сетка спереди) для продува. 3 вентилятора минимум.',
+                        tip: '🔥 RTX 4070 Ti + i5 = потребление ~450Вт пиково. БП нужен на 650-700Вт. Считай на coolermaster.com/power-supply-calculator.',
+                        tipClass: 'yellow',
+                        priority: 'high', priorityText: 'Не экономь!',
+                        colorBg: 'rgba(255, 204, 0, 0.1)', colorBorder: 'rgba(255, 204, 0, 0.3)', colorText: '#ffcc00'
+                    }
+                ],
+                errors: {
+                    bottleneck: { highlighted: true, text: '⚡ Критически важно! Слабый CPU убьёт FPS в играх.' },
+                    case: { highlighted: true, text: '🔥 GPU + CPU = много тепла. Mesh-корпус обязателен!' },
+                    psu: { highlighted: true, text: '💀 Мощная карта + дешёвый БП = сгоревшая система.' }
+                }
+            },
+            pro: {
+                label: 'Сборка: Профи / Работа',
+                pillClass: 'pro',
+                lineClass: 'pro',
+                subtitle: 'Многопоток, большие проекты, рендеринг. Приоритет — CPU, RAM, быстрые накопители.',
+                steps: [
+                    {
+                        num: '01', emoji: '🧠',
+                        title: 'Мощный процессор (CPU) — ядро системы',
+                        desc: 'Для рендера, компиляции, видеомонтажа нужен <strong>многоядерный</strong> CPU. <strong>i7/i9 или Ryzen 7/9</strong> — минимум 8 ядер/16 потоков. Чем больше ядер — тем быстрее рендер и экспорт.',
+                        tip: '🚀 Ryzen 9 7950X (16 ядер) или i9-14900K — топ для продакшена. Для бюджета: Ryzen 7 7700X — отличный выбор.',
+                        tipClass: 'green',
+                        priority: 'high', priorityText: '№1 Приоритет',
+                        colorBg: 'rgba(0, 255, 136, 0.1)', colorBorder: 'rgba(0, 255, 136, 0.3)', colorText: '#00ff88'
+                    },
+                    {
+                        num: '02', emoji: '🧩',
+                        title: 'RAM 32-128 ГБ — чем больше, тем лучше',
+                        desc: 'After Effects, DaVinci Resolve, Blender пожирают RAM. <strong>32 ГБ — минимум</strong>, для серьёзной работы <strong>64 ГБ</strong>. Конфигурация: <strong>2×16 ГБ</strong> или <strong>2×32 ГБ</strong>. Только Kit!',
+                        tip: '⚡ Видеомонтаж 4K = 32 ГБ. 3D-рендер = 64 ГБ. AI/ML = 128 ГБ. Бери с запасом — RAM дешевле, чем нервы.',
+                        tipClass: 'green',
+                        priority: 'high', priorityText: '≥32 ГБ обязательно',
+                        colorBg: 'rgba(0, 212, 255, 0.1)', colorBorder: 'rgba(0, 212, 255, 0.3)', colorText: '#00d4ff'
+                    },
+                    {
+                        num: '03', emoji: '💾',
+                        title: 'Быстрый NVMe SSD (система + проекты)',
+                        desc: 'Два накопителя: <strong>быстрый NVMe Gen4</strong> для системы и проектов, и большой HDD/SATA SSD для архива. Скорость чтения <strong>5000+ МБ/с</strong> ускоряет загрузку проектов в разы.',
+                        tip: '💡 Samsung 990 Pro, WD SN850X — топовые NVMe. Для архива — обычный SATA SSD от 2 ТБ.',
+                        tipClass: '',
+                        priority: 'high', priorityText: 'Скорость работы',
+                        colorBg: 'rgba(0, 255, 136, 0.1)', colorBorder: 'rgba(0, 255, 136, 0.3)', colorText: '#00ff88'
+                    },
+                    {
+                        num: '04', emoji: '🎨',
+                        title: 'Видеокарта (по задаче)',
+                        desc: 'Для <strong>3D/AI</strong>: NVIDIA с CUDA (RTX 4070+). Для <strong>видеомонтажа</strong>: даже RTX 4060 ускоряет экспорт. Для <strong>программирования</strong>: достаточно встройки или бюджетной карты.',
+                        tip: '🎬 DaVinci Resolve обожает NVIDIA. Blender летает на CUDA. Adobe — хорошо работает с любой RTX.',
+                        tipClass: 'purple',
+                        priority: 'medium', priorityText: 'По задаче',
+                        colorBg: 'rgba(184, 41, 227, 0.1)', colorBorder: 'rgba(184, 41, 227, 0.3)', colorText: '#b829e3'
+                    },
+                    {
+                        num: '05', emoji: '🔌',
+                        title: 'Надёжная плата + мощный БП + охлаждение',
+                        desc: 'Материнская плата с <strong>хорошими VRM и радиаторами</strong> — для мощного CPU. БП <strong>750-1000Вт, 80 PLUS Gold</strong>. Башенный кулер или СЖО 240-360мм. Многоядерник греется!',
+                        tip: '🔥 Ryzen 9 / i9 под нагрузкой = 150-250Вт. Башня Noctua NH-D15 или СЖО Arctic 360 — обязательно.',
+                        tipClass: 'yellow',
+                        priority: 'high', priorityText: 'Стабильность',
+                        colorBg: 'rgba(255, 204, 0, 0.1)', colorBorder: 'rgba(255, 204, 0, 0.3)', colorText: '#ffcc00'
+                    }
+                ],
+                errors: {
+                    bottleneck: { highlighted: false, text: '' },
+                    case: { highlighted: true, text: '🔥 Многоядерный CPU = много тепла. Продув критичен!' },
+                    psu: { highlighted: true, text: '💀 Рабочая станция стоит дорого — защити её хорошим БП.' }
+                }
+            }
+        };
+
+        let currentGoal = null;
+        let isAnimating = false;
+
+        // ==========================================
+        // SELECT GOAL
+        // ==========================================
+        function selectGoal(cardEl, goalKey) {
+            if (isAnimating) return;
+
+            document.querySelectorAll('.goal-card').forEach(c => {
+                c.classList.remove('active', 'gaming-active', 'pro-active');
+            });
+            cardEl.classList.add('active');
+            if (goalKey === 'gaming') cardEl.classList.add('gaming-active');
+            if (goalKey === 'pro') cardEl.classList.add('pro-active');
+
+            currentGoal = goalKey;
+            const data = algorithmData[goalKey];
+            updateAlgorithm(data);
+            updateErrors(data);
+
+            setTimeout(() => {
+                document.getElementById('algorithm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 350);
+        }
+
+        function updateAlgorithm(data) {
+            isAnimating = true;
+
+            const prompt = document.getElementById('algoPrompt');
+            const timeline = document.getElementById('algoTimeline');
+            const stepsContainer = document.getElementById('algoSteps');
+            const timelineLine = document.getElementById('algoTimelineLine');
+            const subtitle = document.getElementById('algoSubtitle');
+            const banner = document.getElementById('selectedBanner');
+            const pill = document.getElementById('selectedPill');
+            const pillText = document.getElementById('selectedPillText');
+
+            subtitle.textContent = data.subtitle;
+            pill.className = 'selected-goal-pill ' + data.pillClass;
+            pillText.textContent = data.label;
+            banner.classList.add('show');
+            timelineLine.className = 'algo-timeline-line ' + data.lineClass;
+
+            const existingSteps = stepsContainer.querySelectorAll('.algo-step');
+            if (existingSteps.length > 0) {
+                existingSteps.forEach((step, i) => {
+                    setTimeout(() => {
+                        step.classList.add('step-exit');
+                        step.classList.remove('visible');
+                    }, i * 60);
+                });
+                setTimeout(() => {
+                    buildSteps(data, stepsContainer);
+                    prompt.style.display = 'none';
+                    timeline.style.display = 'block';
+                    animateStepsIn(stepsContainer);
+                }, existingSteps.length * 60 + 350);
+            } else {
+                prompt.style.display = 'none';
+                timeline.style.display = 'block';
+                buildSteps(data, stepsContainer);
+                animateStepsIn(stepsContainer);
+            }
+        }
+
+        function buildSteps(data, container) {
+            container.innerHTML = '';
+            data.steps.forEach((step) => {
+                const el = document.createElement('div');
+                el.className = 'algo-step step-enter';
+                el.innerHTML = `
+                    <div class="algo-step-number" style="background:${step.colorBg};border:1px solid ${step.colorBorder};color:${step.colorText}">
+                        ${step.num}
+                    </div>
+                    <div class="algo-step-card">
+                        <div class="algo-step-header">
+                            <span class="algo-step-emoji">${step.emoji}</span>
+                            <h3 class="algo-step-title">${step.title}</h3>
+                            <span class="priority-badge ${step.priority}">${step.priorityText}</span>
+                        </div>
+                        <p class="algo-step-desc">${step.desc}</p>
+                        <div class="algo-step-tip ${step.tipClass}">${step.tip}</div>
+                    </div>`;
+                container.appendChild(el);
+            });
+        }
+
+        function animateStepsIn(container) {
+            const steps = container.querySelectorAll('.algo-step');
+            steps.forEach((step, i) => {
+                setTimeout(() => step.classList.add('visible'), i * 150 + 100);
+            });
+            setTimeout(() => { isAnimating = false; }, steps.length * 150 + 600);
+        }
+
+        function updateErrors(data) {
+            [
+                ['errorBottleneck', 'errorBottleneckRel', data.errors.bottleneck],
+                ['errorCase', 'errorCaseRel', data.errors.case],
+                ['errorPSU', 'errorPSURel', data.errors.psu]
+            ].forEach(([cardId, relId, err]) => {
+                const card = document.getElementById(cardId);
+                const rel = document.getElementById(relId);
+                if (err.highlighted) {
+                    card.classList.add('highlighted');
+                    rel.textContent = err.text;
+                    rel.style.opacity = '1';
+                } else {
+                    card.classList.remove('highlighted');
+                    rel.style.opacity = '0';
+                }
+            });
+        }
+
+        // ==========================================
+        // PARTICLES (smooth, responsive)
+        // ==========================================
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null };
+        let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        let animFrameId;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                resizeCanvas();
+                initParticles();
+            }, 200);
+        });
+
+        if (!isTouchDevice) {
+            window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
+        }
+
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.35;
+                this.speedY = (Math.random() - 0.5) * 0.35;
+                this.opacity = Math.random() * 0.5 + 0.1;
+                this.color = Math.random() > 0.5 ? '0, 212, 255' : '184, 41, 227';
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (!isTouchDevice && mouse.x !== null) {
+                    const dx = mouse.x - this.x;
+                    const dy = mouse.y - this.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        this.x -= dx * 0.01;
+                        this.y -= dy * 0.01;
+                    }
+                }
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            const w = window.innerWidth;
+            let count;
+            if (w < 480) count = 18;
+            else if (w < 768) count = 30;
+            else if (w < 1200) count = 50;
+            else count = 75;
+
+            particles = [];
+            for (let i = 0; i < count; i++) particles.push(new Particle());
+        }
+
+        function connectParticles() {
+            const maxDist = window.innerWidth < 768 ? 100 : 150;
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a + 1; b < particles.length; b++) {
+                    const dx = particles[a].x - particles[b].x;
+                    const dy = particles[a].y - particles[b].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < maxDist) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(0, 212, 255, ${0.06 * (1 - dist / maxDist)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            connectParticles();
+            animFrameId = requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+
+        // ==========================================
+        // NAVBAR
+        // ==========================================
+        const navbar = document.getElementById('navbar');
+        let lastScrollY = 0;
+
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+            lastScrollY = window.scrollY;
+        }, { passive: true });
+
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('open');
+            document.getElementById('burger').classList.toggle('open');
+            document.body.style.overflow = document.getElementById('navLinks').classList.contains('open') ? 'hidden' : '';
+        }
+
+        function closeMenu() {
+            document.getElementById('navLinks').classList.remove('open');
+            document.getElementById('burger').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        // ==========================================
+        // CHECKLIST
+        // ==========================================
+        function toggleCheck(item) {
+            item.classList.toggle('checked');
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const total = document.querySelectorAll('.checklist-item').length;
+            const done = document.querySelectorAll('.checklist-item.checked').length;
+            document.getElementById('progressText').textContent = `${done} / ${total}`;
+            document.getElementById('progressBar').style.width = (done / total * 100) + '%';
+            document.getElementById('completeMsg').classList.toggle('show', done === total);
+        }
+
+        // ==========================================
+        // SCROLL ANIMATIONS (smooth IntersectionObserver)
+        // ==========================================
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const delay = entry.target.getAttribute('data-delay') || 0;
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, parseInt(delay));
+                }
+            });
+        }, {
+            threshold: 0.08,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // ==========================================
+        // HERO COUNTER ANIMATION
+        // ==========================================
+        function animateValue(id, start, end, duration) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const range = end - start;
+            const startTime = performance.now();
+
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const value = Math.floor(start + range * eased);
+                el.textContent = value;
+                if (progress < 1) requestAnimationFrame(update);
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        const heroObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateValue('stat1', 0, 5, 1500);
+                    animateValue('stat2', 0, 3, 1200);
+                    setTimeout(() => {
+                        document.getElementById('stat3').textContent = '∞';
+                    }, 800);
+                    heroObserver.disconnect();
+                }
+            });
+        }, { threshold: 0.3 });
+
+        heroObserver.observe(document.getElementById('hero'));
+
+        // ==========================================
+        // SMOOTH SCROLL
+        // ==========================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+```
