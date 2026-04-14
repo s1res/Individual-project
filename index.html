@@ -1423,7 +1423,7 @@
             <div class="nav-logo">PC—GUIDE</div>
             <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Переключить тему">
                 <span class="theme-toggle-icon" id="themeIcon">🌙</span>
-                <span class="theme-toggle-text" id="themeText">Тёмная</span>
+                <span class="theme-toggle-text" id="themeText">Сменить фон</span>
             </button>
         </div>
         <ul class="nav-links" id="navLinks">
@@ -2148,13 +2148,13 @@
             if (html.getAttribute('data-theme') === 'light') {
                 html.removeAttribute('data-theme');
                 icon.textContent = '🌙';
-                text.textContent = 'Тёмная';
+                text.textContent = 'Сменить фон';
                 localStorage.setItem('theme', 'dark');
                 if (metaThemeColor) metaThemeColor.setAttribute('content', '#0a0a0f');
             } else {
                 html.setAttribute('data-theme', 'light');
                 icon.textContent = '☀️';
-                text.textContent = 'Светлая';
+                text.textContent = 'Сменить фон';
                 localStorage.setItem('theme', 'light');
                 if (metaThemeColor) metaThemeColor.setAttribute('content', '#ffffff');
             }
@@ -2170,7 +2170,7 @@
             if (savedTheme === 'light') {
                 document.documentElement.setAttribute('data-theme', 'light');
                 icon.textContent = '☀️';
-                text.textContent = 'Светлая';
+                text.textContent = 'Сменить фон';
                 if (metaThemeColor) metaThemeColor.setAttribute('content', '#ffffff');
             }
         })();
