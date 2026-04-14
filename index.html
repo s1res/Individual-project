@@ -6,9 +6,12 @@
     <meta name="description" content="PC-GUIDE 2026 — пошаговый гайд по сборке ПК. Избегай ошибок и не переплачивай.">
     <meta name="theme-color" content="#0a0a0f">
     <title>PC-GUIDE 2026 — Собери компьютер и не переплати</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
         *, *::before, *::after {
             margin: 0;
             padding: 0;
@@ -60,6 +63,17 @@
 
         img, svg { max-width: 100%; height: auto; }
 
+        /* ====== PREFERS REDUCED MOTION ====== */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            #particles-canvas { display: none; }
+            .floating-components { display: none; }
+        }
+
         /* ====== PARTICLES ====== */
         #particles-canvas {
             position: fixed;
@@ -67,6 +81,7 @@
             width: 100%; height: 100%;
             z-index: 0;
             pointer-events: none;
+            will-change: transform;
         }
 
         /* ====== FLOATING BG ====== */
@@ -326,6 +341,7 @@
             letter-spacing: 1px;
             -webkit-tap-highlight-color: transparent;
             touch-action: manipulation;
+            will-change: transform, box-shadow;
         }
 
         .btn-primary::before {
@@ -361,6 +377,7 @@
             gap: 10px;
             -webkit-tap-highlight-color: transparent;
             touch-action: manipulation;
+            will-change: transform, border-color, background;
         }
 
         .btn-secondary:hover {
@@ -479,6 +496,7 @@
             overflow: hidden;
             -webkit-tap-highlight-color: transparent;
             touch-action: manipulation;
+            will-change: transform, border-color, box-shadow;
         }
 
         .goal-card::before {
@@ -693,6 +711,7 @@
             padding: clamp(20px, 3vw, 30px);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             min-width: 0;
+            will-change: transform, opacity;
         }
 
         .algo-step-header {
@@ -816,6 +835,7 @@
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            will-change: transform, border-color, box-shadow;
         }
 
         .error-card::before {
@@ -1125,6 +1145,7 @@
             opacity: 0;
             transform: translateY(40px);
             transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: opacity, transform;
         }
 
         .fade-in.visible {
@@ -1841,6 +1862,7 @@
         let mouse = { x: null, y: null };
         let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         let animFrameId;
+        let prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -1855,9 +1877,9 @@
                 resizeCanvas();
                 initParticles();
             }, 200);
-        });
+        }, { passive: true });
 
-        if (!isTouchDevice) {
+        if (!isTouchDevice && !prefersReducedMotion) {
             window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
         }
 
@@ -1875,7 +1897,7 @@
             update() {
                 this.x += this.speedX;
                 this.y += this.speedY;
-                if (!isTouchDevice && mouse.x !== null) {
+                if (!isTouchDevice && !prefersReducedMotion && mouse.x !== null) {
                     const dx = mouse.x - this.x;
                     const dy = mouse.y - this.y;
                     const dist = Math.sqrt(dx * dx + dy * dy);
@@ -1896,6 +1918,7 @@
         }
 
         function initParticles() {
+            if (prefersReducedMotion) return;
             const w = window.innerWidth;
             let count;
             if (w < 480) count = 18;
@@ -1908,6 +1931,7 @@
         }
 
         function connectParticles() {
+            if (prefersReducedMotion) return;
             const maxDist = window.innerWidth < 768 ? 100 : 150;
             for (let a = 0; a < particles.length; a++) {
                 for (let b = a + 1; b < particles.length; b++) {
@@ -1927,6 +1951,7 @@
         }
 
         function animateParticles() {
+            if (prefersReducedMotion) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach(p => { p.update(); p.draw(); });
             connectParticles();
@@ -1937,14 +1962,21 @@
         animateParticles();
 
         // ==========================================
-        // NAVBAR
+        // NAVBAR (throttled scroll)
         // ==========================================
         const navbar = document.getElementById('navbar');
         let lastScrollY = 0;
+        let ticking = false;
 
         window.addEventListener('scroll', () => {
-            navbar.classList.toggle('scrolled', window.scrollY > 50);
-            lastScrollY = window.scrollY;
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    navbar.classList.toggle('scrolled', window.scrollY > 50);
+                    lastScrollY = window.scrollY;
+                    ticking = false;
+                });
+                ticking = true;
+            }
         }, { passive: true });
 
         function toggleMenu() {
